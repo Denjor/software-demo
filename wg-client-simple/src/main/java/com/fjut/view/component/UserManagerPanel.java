@@ -116,11 +116,14 @@ public class UserManagerPanel extends JPanel {
 		JButton searchBtn = new JButton("搜索");
 		searchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//获取搜索框信息
 				String input = userSelectField.getText();
+				//数据校验
 				if (input == null || "".equals(input.trim())) {
 					JOptionPane.showMessageDialog(null, "输入不能为空", "提示", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				//更新用户列表
 				updateUserList(1, input);
 			}
 		});
@@ -316,7 +319,7 @@ public class UserManagerPanel extends JPanel {
 						permission = 1;
 					}
 					
-					//具体权限
+					//拼接具体权限
 					if(authorityMaterialCheckBox.isSelected()) {
 						authority += "1-";
 					}
@@ -409,7 +412,7 @@ public class UserManagerPanel extends JPanel {
 		ListSelectionModel selectionModel = table.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
 			// 会响应两次，使用e.getValueIsAdjusting()判断，鼠标点击，getValueIsAdjusting() 返回True.
-			// 鼠标释放,getValueIsAdjusting() 返回False
+			// 鼠标释放,getValueIsAdjusting() 返回 False
 			public void valueChanged(ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) {
 					String str = e.getSource().toString();
@@ -509,12 +512,8 @@ public class UserManagerPanel extends JPanel {
 	 * @param input
 	 */
 	private void updateUserList(int type, String input) {
-		if (type == 0) {
-			rowData = userService.getAllUser();
-		}
-		if (type == 1) {
-			rowData = userService.getSearchUser(input);
-		}
+		if (type == 0) rowData = userService.getAllUser();
+		if (type == 1) rowData = userService.getSearchUser(input);
 		table.updateModel(rowData, columnNames);
 		clearField();
 	}
